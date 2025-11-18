@@ -1,137 +1,57 @@
-# README.md — Cálculo de Masa y Centro de Masa mediante Integración Triple en C
+# 📘 Cálculo de Masa y Centro de Masa (Integración Triple en C)
 
-Este proyecto implementa un sistema optimizado en C para calcular la masa total y el centro de masa de un sólido tridimensional, utilizando integración numérica por el método de Monte Carlo. El código está organizado modularmente y optimizado para ser rápido y eficiente.
+*Curso:* Cálculo Vectorial Computacional
+*Institución:* Universidad Nacional de Colombia – Departamento de Matemáticas y Estadística
+*Autora:* Luisa Fernanda Castro Buesaquillo (@Luisa-casstro)
 
 ---
 
 ##  Estructura del Proyecto
 
-```
-tripleintegral/
-├── src/
-│   ├── main.c
-│   ├── densidades.c
-│   └── integracion.c
-├── include/
-│   ├── densidades.h
-│   └── integracion.h
-├── obj/               ← generado automáticamente
-├── programa_vectorial ← ejecutable
-└── Makefile
-```
+La estructura del proyecto se organiza de forma jerárquica para facilitar la claridad y el mantenimiento del código:
 
----
-
-##  Conceptos Implementados
-
-###  Masa
-
-```
-M = ∭ ρ(x, y, z) \, dV
-```
-
-###  Centro de masa
-
-```
-x̄ = (1/M) ∭ xρ \, dV
-ȳ = (1/M) ∭ yρ \, dV
-z̄ = (1/M) ∭ zρ \, dV
-```
-
-###  Densidades disponibles
-
-* **Constante** → ρ = 1
-* **Lineal** → ρ = x + y + z
-* **Gaussiana** → ρ = exp(-(x² + y² + z²))
-
-###  Método de integración implementado
-
-* **Monte Carlo 3D optimizado**
-
----
-
-##  Cómo Compilar
-
-En la terminal, ejecutar:
-
-```
-make
-```
-
-Esto generará el ejecutable:
-
-```
-./programa_vectorial
-```
-
-Para limpiar objetos y ejecutable:
-
-```
-make clean
-```
-
-Para compilar y ejecutar automáticamente:
-
-```
-make run
-```
-
----
-
-##  Cómo Ejecutar el Programa
-
-```
-./programa_vectorial
-```
-
-El programa solicitará:
-
-* Límites en X
-* Límites en Y
-* Límites en Z
-* Número de muestras N
-* Tipo de densidad (1–3)
-
----
-
-##  Archivo de Salida
-
-El programa genera:
-
-```
-resultados.csv
-```
-
-Con el formato:
-
-```
-Metodo,Densidad,N,M,x_bar,y_bar,z_bar,Tiempo
-```
-
-Ejemplo:
-
-```
-MonteCarlo,Gaussiana,100000,100000,100000,12.5831,0.1020,-0.0030,0.2210,0.0872
-```
-
----
-
-##  Preguntas a ChatGPT como orientación
-
-Estas fueron algunas de las preguntas realizadas durante el desarrollo del proyecto:
-
-* ¿Cómo organizar el proyecto en múltiples archivos .c y .h?
-* ¿Cómo optimizar el algoritmo Monte Carlo sin alterar la estructura del programa?
-* ¿Cómo compilar correctamente usando VS Code con MinGW?
-* ¿Cómo modificar funciones para que acepten densidades variables?
-* ¿Cómo crear un Makefile rápido y con directorio obj/?
-* ¿Cómo mejorar la velocidad manteniendo la misma lógica?
-* ¿Cómo guardar resultados en CSV sin sobrescribirlos?
+´´´
+triple_integral/
+├── src/                  # Código fuente principal
+│   ├── main.c            # Control del flujo e interacción con el usuario
+│   ├── densidades.c      # Implementación de funciones de densidad
+│   └── integracion.c     # Métodos numéricos (Riemann y Monte Carlo)
+│
+├── include/              # Archivos de cabecera
+│   ├── densidades.h      # Prototipos de densidad
+│   └── integracion.h     # Prototipos de integración
+│
+├── obj/                  # Archivos objeto generados (.o)
+├── programa_vectorial    # Ejecutable final
+└── Makefile              # Script de compilación
+´´´
 
 ---
 
 ##  Diagrama de Flujo del Programa
 
+A continuación se muestra el diagrama completamente renderizable en GitHub:
+
+`mermaid
+
+##  Fundamento Teórico
+El proyecto calcula numéricamente:
+
+**Masa total:** Integral triple de la densidad sobre el volumen.  
+**Centro de masa:** Cociente entre los momentos y la masa.
+
+### **Densidades disponibles**
+- Constante: rho = 1
+- Lineal: rho = x + y + z
+- Gaussiana: rho = exp(-(x^2 + y^2 + z^2))
+
+### **Métodos implementados**
+- Sumas de Riemann
+- Monte Carlo (optimizado)
+
+---
+
+##  Diagrama de Flujo del Programa
 ```mermaid
 flowchart TD
 
@@ -162,6 +82,63 @@ flowchart TD
     O --> P[Fin]
 ```
 
-## 🧑‍💻 Autor
 
-Juan Fernando Martinez Cabrera
+---
+
+##  Compilación y Ejecución
+
+### **Compilar**
+
+
+make
+
+
+### **Ejecutar**
+
+
+./programa_vectorial
+
+
+### **Limpiar**
+
+
+make clean
+
+
+---
+
+##  Resultados
+
+El programa genera un archivo:
+
+
+resultados.csv
+
+
+Contiene columnas: Metodo, Densidad, N, M, x_bar, y_bar, z_bar, Tiempo
+
+Ejemplo:
+
+
+MonteCarlo,Gaussiana,100000,12.5831,0.1020,-0.0030,0.2210,0.0872
+Riemann,Lineal,50,250.00,5.00,5.00,5.00,0.1540
+```
+
+---
+
+##  Preguntas frecuentes hechas a ChatGPT
+
+* ¿Cómo organizar el proyecto en carpetas?
+* ¿Cómo compilar con Makefile?
+* ¿Cómo optimizar Monte Carlo?
+* ¿Cómo corregir errores de includes relativos?
+* ¿Cómo generar diagramas Mermaid?
+* ¿Cómo exportar resultados?
+
+---
+
+##  Autor
+
+*Luisa Fernanda Castro Buesaquillo*
+Estudiante de Cálculo Vectorial Computacional
+Universidad Nacional de Colombia
