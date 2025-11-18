@@ -1,141 +1,141 @@
-# Tarea: Cálculo de Masa y Centro de Masa (Integración Triple en C)
+# 📘 Cálculo de Masa y Centro de Masa (Integración Triple en C)
 
-**Curso:** Cálculo Vectorial Computacional
-**Institución:** Universidad Nacional de Colombia - Departamento de Matemáticas y Estadística
-**Autora:** Luisa Fernanda Castro Buesaquillo
- ([@Luisa-casstro](https://github.com/Luisa-casstro/Tarea_Linux_Vectorial))
+*Curso:* Cálculo Vectorial Computacional
+*Institución:* Universidad Nacional de Colombia – Departamento de Matemáticas y Estadística
+*Autora:* Luisa Fernanda Castro Buesaquillo (@Luisa-casstro)
 
 ---
 
-Cálculo de Masa y Centro de Masa (Integración Triple en C)
+##  Estructura del Proyecto
 
-Este repositorio contiene una implementación modular en C para resolver problemas de cálculo vectorial computacional. El programa calcula la masa total y las coordenadas del centro de masa de un sólido, permitiendo elegir entre diferentes densidades y métodos de integración numérica.
+El proyecto está dividido modularmente para separar lógica matemática, densidades y entrada del usuario.
 
-📁 Estructura del Proyecto
-
-El código está organizado para separar la lógica matemática de la interfaz de usuario:
 
 triple_integral/
 ├── src/
-│   ├── main.c          # Control del flujo y menús
-│   ├── densidades.c    # Definición de funciones de densidad
-│   └── integracion.c   # Lógica de Riemann y Monte Carlo
+│   ├── main.c            # Control del flujo y menús
+│   ├── densidades.c      # Implementación de las densidades
+│   └── integracion.c     # Integración por Riemann y Monte Carlo
+│
 ├── include/
-│   ├── densidades.h    # Cabeceras de densidades
-│   └── integracion.h   # Cabeceras de integración
-├── obj/                # Archivos objeto (.o) generados
-├── programa_vectorial  # Ejecutable final
-└── Makefile            # Automatización de compilación
+│   ├── densidades.h      # Cabeceras de las densidades
+│   └── integracion.h     # Cabeceras de integración
+│
+├── obj/                  # Objetos compilados
+├── programa_vectorial    # Ejecutable final
+└── Makefile              # Script de compilación
 
 
-🧠 Fundamento Teórico
+---
 
-El programa aproxima las siguientes integrales triples sobre una región rectangular $V$:
+##  Fundamento Teórico
 
-Masa Total ($M$):
+El proyecto calcula numéricamente:
 
+*Masa total:* Integral triple de la densidad sobre el volumen.
+*Centro de masa:* Cociente entre los momentos y la masa.
 
-$$M = \iiint_V \rho(x, y, z) \, dV$$
+### *Densidades disponibles*
 
-Centro de Masa ($\bar{x}, \bar{y}, \bar{z}$):
+* Constante: rho = 1
+* Lineal: rho = x + y + z
+* Gaussiana: rho = exp(-(x^2 + y^2 + z^2))
 
+### *Métodos implementados*
 
-$$\bar{x} = \frac{1}{M} \iiint_V x\rho \, dV, \quad \bar{y} = \frac{1}{M} \iiint_V y\rho \, dV, \quad \bar{z} = \frac{1}{M} \iiint_V z\rho \, dV$$
+* Sumas de Riemann
+* Monte Carlo (optimizado)
 
-Opciones disponibles
+---
 
-Densidades ($\rho$):
+##  Diagrama de Flujo del Programa
 
-Constante: $\rho = 1$
-
-Lineal: $\rho = x + y + z$
-
-Gaussiana: $\rho = e^{-(x^2 + y^2 + z^2)}$
-
-Métodos: Sumas de Riemann y Monte Carlo (Optimizado).
-
-🔷 Diagrama de Flujo
-
-A continuación se describe la lógica principal del programa, desde la solicitud de datos hasta la generación del archivo CSV.
-
+mermaid
 flowchart TD
 
-    A[Inicio] --> B[Declarar variables]
-    B --> C[Solicitar límites x, y, z]
-    C --> D[Solicitar método: Riemann o MonteCarlo]
-    D --> E[Solicitar tipo de densidad]
-    E --> F[Solicitar pasos o muestras N]
-    F --> G[Iniciar cronómetro]
+    A[Inicio] --> B[Ingresar límites X,Y,Z]
+    B --> C[Ingresar número de muestras N]
+    C --> D[Seleccionar tipo de densidad]
 
-    %% Selección de densidad
-    G --> H{Tipo de densidad}
-    H -->|Constante| H1[Usar densidad constante]
-    H -->|Lineal| H2[Usar densidad lineal]
-    H -->|Gaussiana| H3[Usar densidad gaussiana]
+    D -->|1 Constante| E1[Usar densidad_constante]
+    D -->|2 Lineal| E2[Usar densidad_lineal]
+    D -->|3 Gaussiana| E3[Usar densidad_gaussiana]
 
-    H1 --> I[Preparar integración]
-    H2 --> I
-    H3 --> I
+    E1 --> F[Inicializar sumatorias]
+    E2 --> F
+    E3 --> F
 
-    %% Método
-    I --> J{Método seleccionado}
+    F --> G[Calcular dx, dy, dz y volumen]
+    G --> H{¿i < N?}
 
-    %% Riemann
-    J -->|Riemann| K[Bucle triple i, j, k]
-    K --> L[Sumar volumen por rho]
+    H -->|Sí| I[Generar punto aleatorio x,y,z]
+    I --> J[Evaluar densidad rho]
+    J --> K[Acumular sumas]
+    K --> H
 
-    %% Monte Carlo
-    J -->|MonteCarlo| M[Bucle desde 0 a N]
-    M --> N[Generar puntos aleatorios]
-    N --> O[Acumular promedio por volumen]
-
-    %% Masa
-    L --> P[Integración terminada]
-    O --> P
-
-    P --> Q[Guardar M]
-
-    %% Momento X (Simplificado para visualización)
-    Q --> R[Calcular momentos Mx, My, Mz]
-    R --> S[Ejecutar integración para cada momento]
-    S --> T[Guardar y Exportar a CSV]
+    H -->|No| L[Calcular masa M]
+    L --> M[Calcular centro de masa Cx, Cy, Cz]
+    M --> N[Mostrar resultados]
+    N --> O[Guardar en resultados.csv]
+    O --> P[Fin]
 
 
-▶️ Compilación y Ejecución
+---
 
-El proyecto incluye un Makefile para facilitar la gestión. Asegúrate de estar en la raíz del proyecto (donde está el archivo Makefile).
+## ▶ Compilación y Ejecución
 
-1. Compilar
+### *Compilar*
 
-Genera el ejecutable y la carpeta de objetos:
 
 make
 
 
-2. Ejecutar
+### *Ejecutar*
 
-Inicia el programa interactivo:
 
 ./programa_vectorial
 
 
-(O usa make run para compilar y ejecutar en un solo paso).
+### *Limpiar*
 
-3. Limpiar
-
-Para borrar los archivos compilados y empezar de cero:
 
 make clean
 
 
-📊 Resultados
+---
 
-Al finalizar la ejecución, se generará (o actualizará) el archivo resultados.csv en el directorio actual. Este formato facilita el análisis de datos en Excel o Python.
+## 📊 Resultados
 
-Formato del CSV:
-Metodo,Densidad,N,M,x_bar,y_bar,z_bar,Tiempo
+El programa genera un archivo:
 
-Ejemplo de salida:
+
+resultados.csv
+
+
+Contiene columnas: Metodo, Densidad, N, M, x_bar, y_bar, z_bar, Tiempo
+
+Ejemplo:
+
 
 MonteCarlo,Gaussiana,100000,12.5831,0.1020,-0.0030,0.2210,0.0872
 Riemann,Lineal,50,250.00,5.00,5.00,5.00,0.1540
+
+
+---
+
+##  Preguntas frecuentes hechas a ChatGPT
+
+* ¿Cómo organizar el proyecto en carpetas?
+* ¿Cómo compilar con Makefile?
+* ¿Cómo optimizar Monte Carlo?
+* ¿Cómo corregir errores de includes relativos?
+* ¿Cómo generar diagramas Mermaid?
+* ¿Cómo exportar resultados?
+
+---
+
+## Autora
+
+*Luisa Fernanda Castro Buesaquillo*
+Estudiante de Cálculo Vectorial Computacional
+Universidad Nacional de Colombia
