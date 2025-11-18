@@ -8,48 +8,50 @@
 
 ##  Estructura del Proyecto
 
-El proyecto está dividido modularmente para separar lógica matemática, densidades y entrada del usuario.
+La estructura del proyecto se organiza de forma jerárquica para facilitar la claridad y el mantenimiento del código:
 
 
 triple_integral/
-├── src/
-│   ├── main.c            # Control del flujo y menús
-│   ├── densidades.c      # Implementación de las densidades
-│   └── integracion.c     # Integración por Riemann y Monte Carlo
+├── src/                  # Código fuente principal
+│   ├── main.c            # Control del flujo e interacción con el usuario
+│   ├── densidades.c      # Implementación de funciones de densidad
+│   └── integracion.c     # Métodos numéricos (Riemann y Monte Carlo)
 │
-├── include/
-│   ├── densidades.h      # Cabeceras de las densidades
-│   └── integracion.h     # Cabeceras de integración
+├── include/              # Archivos de cabecera
+│   ├── densidades.h      # Prototipos de densidad
+│   └── integracion.h     # Prototipos de integración
 │
-├── obj/                  # Objetos compilados
+├── obj/                  # Archivos objeto generados (.o)
 ├── programa_vectorial    # Ejecutable final
 └── Makefile              # Script de compilación
 
 
 ---
 
-##  Fundamento Teórico
+##  Diagrama de Flujo del Programa
 
+A continuación se muestra el diagrama completamente renderizable en GitHub:
+
+`mermaid
+
+##  Fundamento Teórico
 El proyecto calcula numéricamente:
 
-*Masa total:* Integral triple de la densidad sobre el volumen.
-*Centro de masa:* Cociente entre los momentos y la masa.
+**Masa total:** Integral triple de la densidad sobre el volumen.  
+**Centro de masa:** Cociente entre los momentos y la masa.
 
-### *Densidades disponibles*
+### **Densidades disponibles**
+- Constante: rho = 1
+- Lineal: rho = x + y + z
+- Gaussiana: rho = exp(-(x^2 + y^2 + z^2))
 
-* Constante: rho = 1
-* Lineal: rho = x + y + z
-* Gaussiana: rho = exp(-(x^2 + y^2 + z^2))
-
-### *Métodos implementados*
-
-* Sumas de Riemann
-* Monte Carlo (optimizado)
+### **Métodos implementados**
+- Sumas de Riemann
+- Monte Carlo (optimizado)
 
 ---
 
 ##  Diagrama de Flujo del Programa
-
 mermaid
 flowchart TD
 
@@ -78,25 +80,25 @@ flowchart TD
     M --> N[Mostrar resultados]
     N --> O[Guardar en resultados.csv]
     O --> P[Fin]
-
+`
 
 ---
 
-## ▶ Compilación y Ejecución
+##  Compilación y Ejecución
 
-### *Compilar*
+### **Compilar**
 
 
 make
 
 
-### *Ejecutar*
+### **Ejecutar**
 
 
 ./programa_vectorial
 
 
-### *Limpiar*
+### **Limpiar**
 
 
 make clean
@@ -104,7 +106,7 @@ make clean
 
 ---
 
-## 📊 Resultados
+##  Resultados
 
 El programa genera un archivo:
 
@@ -119,7 +121,7 @@ Ejemplo:
 
 MonteCarlo,Gaussiana,100000,12.5831,0.1020,-0.0030,0.2210,0.0872
 Riemann,Lineal,50,250.00,5.00,5.00,5.00,0.1540
-
+```
 
 ---
 
@@ -134,7 +136,7 @@ Riemann,Lineal,50,250.00,5.00,5.00,5.00,0.1540
 
 ---
 
-## Autora
+##  Autor
 
 *Luisa Fernanda Castro Buesaquillo*
 Estudiante de Cálculo Vectorial Computacional
