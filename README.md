@@ -2,49 +2,140 @@
 
 **Curso:** Cálculo Vectorial Computacional
 **Institución:** Universidad Nacional de Colombia - Departamento de Matemáticas y Estadística
-**Autora:** Luisa Castro ([@Luisa-casstro](https://github.com/Luisa-casstro/Tarea_Linux_Vectorial))
+**Autora:** Luisa Fernanda Castro Buesaquillo
+ ([@Luisa-casstro](https://github.com/Luisa-casstro/Tarea_Linux_Vectorial))
 
 ---
 
-## 📝 Descripción del Proyecto
+Cálculo de Masa y Centro de Masa (Integración Triple en C)
 
-Este proyecto es una implementación en **Lenguaje C** de un programa diseñado para calcular la **masa total** ($M$) y el **centro de masa** ($\overline{x}, \overline{y}, \overline{z}$) de un cuerpo tridimensional ($V$) que posee una función de densidad variable $\rho(x,y,z)$.
+Este repositorio contiene una implementación modular en C para resolver problemas de cálculo vectorial computacional. El programa calcula la masa total y las coordenadas del centro de masa de un sólido, permitiendo elegir entre diferentes densidades y métodos de integración numérica.
 
-El objetivo principal es integrar los conceptos del cálculo vectorial (específicamente la integración triple) con la programación numérica y estructurada en C. El programa utiliza métodos de integración numérica (Sumas de Riemann y Monte Carlo) para aproximar las soluciones sobre una región rectangular.
+📁 Estructura del Proyecto
 
-## 📐 Fundamento Teórico
+El código está organizado para separar la lógica matemática de la interfaz de usuario:
 
-Los cálculos se basan en las definiciones formales de masa y centro de masa mediante integrales triples:
+triple_integral/
+├── src/
+│   ├── main.c          # Control del flujo y menús
+│   ├── densidades.c    # Definición de funciones de densidad
+│   └── integracion.c   # Lógica de Riemann y Monte Carlo
+├── include/
+│   ├── densidades.h    # Cabeceras de densidades
+│   └── integracion.h   # Cabeceras de integración
+├── obj/                # Archivos objeto (.o) generados
+├── programa_vectorial  # Ejecutable final
+└── Makefile            # Automatización de compilación
 
-* **Masa Total ($M$):**
-    $$M=\iint\iint_{V}\rho(x,y,z)dV$$
 
-* **Centro de Masa ($\overline{x}, \overline{y}, \overline{z}$):**
-    $$\overline{x}=\frac{1}{M}\iint\iint_{V}x\rho(x,y,z)dV$$
-    $$\overline{y}=\frac{1}{M}\iint\iint_{V}y\rho(x,y,z)dV$$
-    $$\overline{z}=\frac{1}{M}\iint\iint_{V}z\rho(x,y,z)dV$$
+🧠 Fundamento Teórico
 
-## ⚙️ Funcionalidades Implementadas
+El programa aproxima las siguientes integrales triples sobre una región rectangular $V$:
 
-El programa está dividido en módulos para manejar la lógica de integración y las definiciones de densidad de forma separada, tal como se especificó en los requisitos.
+Masa Total ($M$):
 
-### 1. Modelos de Densidad (`densidades.c`)
 
-Se implementaron tres funciones de densidad distintas:
+$$M = \iiint_V \rho(x, y, z) \, dV$$
 
-1.  **Densidad Constante:** $\rho(x,y,z)=1$
-2.  **Densidad Lineal:** $\rho(x,y,z)=ax+by+cz$
-3.  **Densidad Gaussiana:** $\rho(x,y,z)=e^{-(x^{2}+y^{2}+z^{2})}$
+Centro de Masa ($\bar{x}, \bar{y}, \bar{z}$):
 
-### 2. Métodos de Integración Numérica (`integracion.c`)
 
-El programa implementa dos métodos para calcular la integral triple sobre una región rectangular definida por $[x_{min}, x_{max}]$, $[y_{min}, y_{max}]$ y $[z_{min}, z_{max}]$.
+$$\bar{x} = \frac{1}{M} \iiint_V x\rho \, dV, \quad \bar{y} = \frac{1}{M} \iiint_V y\rho \, dV, \quad \bar{z} = \frac{1}{M} \iiint_V z\rho \, dV$$
 
-1.  **Sumas de Riemann Tridimensional:** Aproxima la integral dividiendo el volumen en $N_x \times N_y \times N_z$ subceldas y evaluando la función en el centro de cada una.
-2.  **Método de Monte Carlo:** Estima la integral generando $N$ puntos aleatorios dentro del volumen $V$ y calculando el promedio de la función evaluada en dichos puntos, ponderado por el volumen total.
+Opciones disponibles
 
-El usuario puede configurar el número de subdivisiones (para Riemann) o el número total de muestras (para Monte Carlo).
+Densidades ($\rho$):
 
-## 📁 Estructura del Proyecto
+Constante: $\rho = 1$
 
-El código fuente sigue la estructura modular requerida:
+Lineal: $\rho = x + y + z$
+
+Gaussiana: $\rho = e^{-(x^2 + y^2 + z^2)}$
+
+Métodos: Sumas de Riemann y Monte Carlo (Optimizado).
+
+🔷 Diagrama de Flujo
+
+A continuación se describe la lógica principal del programa, desde la solicitud de datos hasta la generación del archivo CSV.
+
+flowchart TD
+
+    A[Inicio] --> B[Declarar variables]
+    B --> C[Solicitar límites x, y, z]
+    C --> D[Solicitar método: Riemann o MonteCarlo]
+    D --> E[Solicitar tipo de densidad]
+    E --> F[Solicitar pasos o muestras N]
+    F --> G[Iniciar cronómetro]
+
+    %% Selección de densidad
+    G --> H{Tipo de densidad}
+    H -->|Constante| H1[Usar densidad constante]
+    H -->|Lineal| H2[Usar densidad lineal]
+    H -->|Gaussiana| H3[Usar densidad gaussiana]
+
+    H1 --> I[Preparar integración]
+    H2 --> I
+    H3 --> I
+
+    %% Método
+    I --> J{Método seleccionado}
+
+    %% Riemann
+    J -->|Riemann| K[Bucle triple i, j, k]
+    K --> L[Sumar volumen por rho]
+
+    %% Monte Carlo
+    J -->|MonteCarlo| M[Bucle desde 0 a N]
+    M --> N[Generar puntos aleatorios]
+    N --> O[Acumular promedio por volumen]
+
+    %% Masa
+    L --> P[Integración terminada]
+    O --> P
+
+    P --> Q[Guardar M]
+
+    %% Momento X (Simplificado para visualización)
+    Q --> R[Calcular momentos Mx, My, Mz]
+    R --> S[Ejecutar integración para cada momento]
+    S --> T[Guardar y Exportar a CSV]
+
+
+▶️ Compilación y Ejecución
+
+El proyecto incluye un Makefile para facilitar la gestión. Asegúrate de estar en la raíz del proyecto (donde está el archivo Makefile).
+
+1. Compilar
+
+Genera el ejecutable y la carpeta de objetos:
+
+make
+
+
+2. Ejecutar
+
+Inicia el programa interactivo:
+
+./programa_vectorial
+
+
+(O usa make run para compilar y ejecutar en un solo paso).
+
+3. Limpiar
+
+Para borrar los archivos compilados y empezar de cero:
+
+make clean
+
+
+📊 Resultados
+
+Al finalizar la ejecución, se generará (o actualizará) el archivo resultados.csv en el directorio actual. Este formato facilita el análisis de datos en Excel o Python.
+
+Formato del CSV:
+Metodo,Densidad,N,M,x_bar,y_bar,z_bar,Tiempo
+
+Ejemplo de salida:
+
+MonteCarlo,Gaussiana,100000,12.5831,0.1020,-0.0030,0.2210,0.0872
+Riemann,Lineal,50,250.00,5.00,5.00,5.00,0.1540
