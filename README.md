@@ -10,7 +10,8 @@
 
 La estructura del proyecto se organiza de forma jerárquica para facilitar la claridad y el mantenimiento del código:
 
-´´´
+
+```
 triple_integral/
 ├── src/                  # Código fuente principal
 │   ├── main.c            # Control del flujo e interacción con el usuario
@@ -24,7 +25,7 @@ triple_integral/
 ├── obj/                  # Archivos objeto generados (.o)
 ├── programa_vectorial    # Ejecutable final
 └── Makefile              # Script de compilación
-´´´
+```
 
 ---
 
@@ -55,31 +56,45 @@ El proyecto calcula numéricamente:
 ```mermaid
 flowchart TD
 
-    A[Inicio] --> B[Ingresar límites X,Y,Z]
-    B --> C[Ingresar número de muestras N]
-    C --> D[Seleccionar tipo de densidad]
+    A[Inicio] --> B[Declarar variables]
+    B --> C[Solicitar limites x y z]
+    C --> D[Solicitar metodo Riemann o MonteCarlo]
+    D --> E[Solicitar tipo de densidad]
+    E --> F[Solicitar pasos o muestras N]
+    F --> G[Iniciar cronometro]
 
-    D -->|1 Constante| E1[Usar densidad_constante]
-    D -->|2 Lineal| E2[Usar densidad_lineal]
-    D -->|3 Gaussiana| E3[Usar densidad_gaussiana]
+    %% Seleccion de densidad
+    G --> H{Tipo de densidad}
+    H -->|Constante| H1[Usar densidad constante]
+    H -->|Lineal| H2[Usar densidad lineal]
+    H -->|Gaussiana| H3[Usar densidad gaussiana]
 
-    E1 --> F[Inicializar sumatorias]
-    E2 --> F
-    E3 --> F
+    H1 --> I[Preparar integracion]
+    H2 --> I
+    H3 --> I
 
-    F --> G[Calcular dx, dy, dz y volumen]
-    G --> H{¿i < N?}
+    %% Metodo
+    I --> J{Metodo seleccionado}
 
-    H -->|Sí| I[Generar punto aleatorio x,y,z]
-    I --> J[Evaluar densidad rho]
-    J --> K[Acumular sumas]
-    K --> H
+    %% Riemann
+    J -->|Riemann| K[Bucle triple i j k]
+    K --> L[Sumar volumen por rho]
 
-    H -->|No| L[Calcular masa M]
-    L --> M[Calcular centro de masa Cx, Cy, Cz]
-    M --> N[Mostrar resultados]
-    N --> O[Guardar en resultados.csv]
-    O --> P[Fin]
+    %% Monte Carlo
+    J -->|MonteCarlo| M[Bucle desde 0 a N]
+    M --> N[Generar puntos aleatorios]
+    N --> O[Acumular promedio por volumen]
+
+    %% Masa
+    L --> P[Integracion terminada]
+    O --> P
+
+    P --> Q[Guardar M]
+
+    %% Momento X
+    Q --> R[Calcular momento Mx]
+    R --> S[Ejecutar integracion Mx]
+    S --> T[Guardar]
 ```
 
 
