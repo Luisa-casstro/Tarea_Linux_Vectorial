@@ -13,18 +13,18 @@ La estructura del proyecto se organiza de forma jerárquica para facilitar la cl
 
 ```
 triple_integral/
-├── src/                  # Código fuente principal
-│   ├── main.c            # Control del flujo e interacción con el usuario
-│   ├── densidades.c      # Implementación de funciones de densidad
-│   └── integracion.c     # Métodos numéricos (Riemann y Monte Carlo)
+├── src/                  
+│   ├── main.c            
+│   ├── densidades.c      
+│   └── integracion.c     
 │
-├── include/              # Archivos de cabecera
-│   ├── densidades.h      # Prototipos de densidad
-│   └── integracion.h     # Prototipos de integración
+├── include/              
+│   ├── densidades.h     
+│   └── integracion.h  
 │
-├── obj/                  # Archivos objeto generados (.o)
-├── programa_vectorial    # Ejecutable final
-└── Makefile              # Script de compilación
+├── obj/                  
+├── programa_vectorial   
+└── Makefile             
 ```
 
 ---
