@@ -1,0 +1,39 @@
+1. Archivos Binarios y Ejecutables
+
+Ignora el ejecutable principal (programa_vectorial)
+
+programa_vectorial
+
+2. Archivos Objeto
+
+Ignora todos los archivos objeto (.o)
+
+Estos se generan en el directorio 'obj/' y son archivos intermedios
+
+*.o
+obj/
+
+3. Archivos Temporales/Debugging
+
+Ignora archivos de depuración y logs
+
+*.dSYM
+*.out
+*.log
+
+4. Archivos de Salida de Resultados
+
+Ignora el archivo de resultados generado por el programa en cada ejecución
+
+resultados.csv
+
+5. Archivos Específicos de IDEs (Recomendado)
+
+Ignora archivos de configuración de Visual Studio Code
+
+.vscode/
+
+Ignora archivos de configuración de otros IDEs comunes
+
+*.swp
+*~
